@@ -19,6 +19,9 @@
                     <a href="{{ route('article.index') }}">Article</a>
                 </li>
                 <li class="list-group-item">
+                    <a href="{{ route('tag.index') }}">Tags</a>
+                </li>
+                <li class="list-group-item">
                     <a href="{{ route('user.logout') }}">
                         Logout
                     </a>
