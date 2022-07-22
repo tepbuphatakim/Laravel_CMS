@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('product', ProductController::class);
     Route::resource('article', ArticleController::class);
+    Route::resource('tag',TagController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product.index');
     // Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
     // Route::post('product', [ProductController::class, 'store'])->name('product.store');
