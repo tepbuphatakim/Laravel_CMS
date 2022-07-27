@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\ArticleController;
-use App\Http\Controllers\Admin\ArticleController as ArticleAdminController;
+use App\Http\Controllers\AdminAPI\ArticleController as ArticleAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*

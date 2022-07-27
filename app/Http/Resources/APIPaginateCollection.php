@@ -26,7 +26,7 @@ class APIPaginateCollection extends ResourceCollection
         return [
             $this->keyData => $this->resourceClass::collection($this->collection),
             'pagination' => [
-                'page' => $this->resource->currentPage(),
+                'current_page' => $this->resource->currentPage(),
                 'last_page' => $this->resource->lastPage(),
                 'limit' => $this->resource->perPage(),
                 'total' => $this->resource->total()
