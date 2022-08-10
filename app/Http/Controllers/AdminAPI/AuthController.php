@@ -33,4 +33,19 @@ class AuthController extends Controller
             throw $th;
         }
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            $accessToken = AccessToken::where('access_token', $request->access_token)->first();
+            if ($accessToken) {
+                $accessToken->delete();
+                return response()->json([ 'success' => true ]);
+            }
+            
+            return response()->json([ 'success' => false ]); 
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
