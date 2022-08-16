@@ -38,7 +38,7 @@ class ArticleController extends Controller
     public function store(ArticleRequest $request)
     {
         try {
-            Article::create($request->only('title', 'content'));
+            Article::create($request->only('title', 'content', 'category_id'));
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -73,7 +73,7 @@ class ArticleController extends Controller
     {
         try {
             $article = Article::findOrFail($id);
-            $article->update($request->only('title', 'content'));
+            $article->update($request->only('title', 'content', 'category_id'));
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
             throw $th;

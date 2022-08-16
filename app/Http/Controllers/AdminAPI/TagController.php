@@ -6,6 +6,7 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Resources\TagResource;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TagRequest;
 use App\Http\Resources\APIPaginateCollection;
 
 class TagController extends Controller
@@ -34,9 +35,14 @@ class TagController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
-        //
+        try {
+            Tag::create($request->only('title'));
+            return response()->json([ 'success' => true ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -47,7 +53,13 @@ class TagController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $data = Tag::findOrFail($id);
+            $response = new TagResource($data);
+            return response()->json([ 'data' => $response ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -57,9 +69,15 @@ class TagController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TagRequest $request, $id)
     {
-        //
+        try {
+            $tag = Tag::findOrFail($id);
+            $tag->update($request->only('title', 'content'));
+            return response()->json([ 'success' => true ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -70,6 +88,12 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $tag = Tag::findOrFail($id);
+            $tag->delete();
+            return response()->json([ 'success' => true ]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
