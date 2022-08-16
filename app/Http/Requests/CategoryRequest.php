@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,10 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|max:255|unique:products,name',
-            'price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/', // 999.99, 99.9, 99
-            'image' => 'required'
+            'title' => 'required|max:255|unique:categories,title'
         ];
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
-            $rules['name'] = 'required|max:255|unique:products,name,' . $this->product;
-            $rules['image'] = 'nullable';
+            $rules['title'] = 'required|max:255|unique:categories,title,' . $this->category;
         }
 
         return $rules;
