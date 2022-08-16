@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\AdminAPI;
 
-use App\Models\Article;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleRequest;
-use App\Http\Resources\ArticleResource;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\APIPaginateCollection;
+use App\Http\Resources\CategoryResource;
 
-class ArticleController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,8 +21,8 @@ class ArticleController extends Controller
         try {
             $perPage = $request->limit ? $request->limit : 10;
             $currentPage = $request->page ? $request->page : 1;
-            $data = Article::paginate($perPage, ['*'], 'page', $currentPage);
-            $response = new APIPaginateCollection($data, ArticleResource::class, 'data');
+            $data = Category::paginate($perPage, ['*'], 'page', $currentPage);
+            $response = new APIPaginateCollection($data, CategoryResource::class, 'data');
             return response()->json($response);
         } catch (\Throwable $th) {
             throw $th;
@@ -35,10 +35,10 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleRequest $request)
+    public function store(CategoryRequest $request)
     {
         try {
-            Article::create($request->only('title', 'content', 'category_id'));
+            Category::create($request->only('title'));
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -54,8 +54,8 @@ class ArticleController extends Controller
     public function show($id)
     {
         try {
-            $data = Article::findOrFail($id);
-            $response = new ArticleResource($data);
+            $data = Category::findOrFail($id);
+            $response = new CategoryResource($data);
             return response()->json([ 'data' => $response ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -69,11 +69,11 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleRequest $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         try {
-            $article = Article::findOrFail($id);
-            $article->update($request->only('title', 'content', 'category_id'));
+            $category = Category::findOrFail($id);
+            $category->update($request->only('title'));
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -89,8 +89,8 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         try {
-            $article = Article::findOrFail($id);
-            $article->delete();
+            $category = Category::findOrFail($id);
+            $category->delete();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
             throw $th;

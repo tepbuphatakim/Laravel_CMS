@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\AdminAPI\ArticleController as ArticleAdminController;
+use App\Http\Controllers\AdminAPI\CategoryController as CategoryAdminController;
+use App\Http\Controllers\AdminAPI\TagController as TagAdminController;
 use App\Http\Controllers\AdminAPI\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +23,8 @@ Route::post('admin/logout', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => 'auth.api'], function () {
     Route::apiResource('admin/article', ArticleAdminController::class);
+    Route::apiResource('admin/category', CategoryAdminController::class);
+    Route::apiResource('admin/tag', TagAdminController::class);
 });
 
 Route::get('article', [ArticleController::class, 'articleLists']);

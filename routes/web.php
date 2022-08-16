@@ -23,17 +23,8 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::resource('product', ProductController::class);
     Route::resource('article', ArticleController::class);
     Route::resource('tag',TagController::class);
-    // Route::get('product', [ProductController::class, 'index'])->name('product.index');
-    // Route::get('product/create', [ProductController::class, 'create'])->name('product.create');
-    // Route::post('product', [ProductController::class, 'store'])->name('product.store');
-    // Route::get('product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
-    // Route::put('product/{product}', [ProductController::class, 'update'])->name('product.update');
-    // Route::get('product/{product}', [ProductController::class, 'show'])->name('product.show');
-    // Route::delete('product/{product}', [ProductController::class, 'delete'])->name('product.destroy);
-
     Route::get('user/logout', [UserController::class, 'logout'])->name('user.logout');
 });
 
