@@ -25,7 +25,10 @@ class ArticleRequest extends FormRequest
     {
         $rules = [
             'title' => 'required|max:255|unique:articles,title',
-            'content' => 'required'
+            'content' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'tag_ids' => 'array',
+            'tag_ids.*' => 'required|exists:tags,id|distinct',
         ];
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             $rules['title'] = 'required|max:255|unique:articles,title,' . $this->article;

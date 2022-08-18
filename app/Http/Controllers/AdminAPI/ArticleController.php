@@ -4,10 +4,12 @@ namespace App\Http\Controllers\AdminAPI;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\APIPaginateCollection;
+use App\Http\Resources\ArticleDetailResource;
 
 class ArticleController extends Controller
 {
@@ -37,10 +39,14 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+        DB::beginTransaction();
         try {
-            Article::create($request->only('title', 'content', 'category_id'));
+            $article = Article::create($request->only('title', 'content', 'category_id'));
+            $article->tags()->sync($request->input('tag_ids'));
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -55,7 +61,7 @@ class ArticleController extends Controller
     {
         try {
             $data = Article::findOrFail($id);
-            $response = new ArticleResource($data);
+            $response = new ArticleDetailResource($data);
             return response()->json([ 'data' => $response ]);
         } catch (\Throwable $th) {
             throw $th;
@@ -71,11 +77,15 @@ class ArticleController extends Controller
      */
     public function update(ArticleRequest $request, $id)
     {
+        DB::beginTransaction();
         try {
             $article = Article::findOrFail($id);
             $article->update($request->only('title', 'content', 'category_id'));
+            $article->tags()->sync($request->input('tag_ids'));
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -88,11 +98,14 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $article = Article::findOrFail($id);
             $article->delete();
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }

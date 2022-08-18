@@ -4,9 +4,10 @@ namespace App\Http\Controllers\AdminAPI;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use App\Http\Requests\TagRequest;
+use Illuminate\Support\Facades\DB;
 use App\Http\Resources\TagResource;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TagRequest;
 use App\Http\Resources\APIPaginateCollection;
 
 class TagController extends Controller
@@ -37,10 +38,13 @@ class TagController extends Controller
      */
     public function store(TagRequest $request)
     {
+        DB::beginTransaction();
         try {
             Tag::create($request->only('title'));
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -71,11 +75,14 @@ class TagController extends Controller
      */
     public function update(TagRequest $request, $id)
     {
+        DB::beginTransaction();
         try {
             $tag = Tag::findOrFail($id);
-            $tag->update($request->only('title', 'content'));
+            $tag->update($request->only('title'));
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -88,11 +95,14 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $tag = Tag::findOrFail($id);
             $tag->delete();
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }

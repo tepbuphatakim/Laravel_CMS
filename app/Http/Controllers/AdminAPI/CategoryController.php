@@ -4,10 +4,11 @@ namespace App\Http\Controllers\AdminAPI;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
-use App\Http\Resources\APIPaginateCollection;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\APIPaginateCollection;
 
 class CategoryController extends Controller
 {
@@ -37,10 +38,13 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+        DB::beginTransaction();
         try {
             Category::create($request->only('title'));
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -71,11 +75,14 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
+        DB::beginTransaction();
         try {
             $category = Category::findOrFail($id);
             $category->update($request->only('title'));
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
@@ -88,11 +95,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $category = Category::findOrFail($id);
             $category->delete();
+            DB::commit();
             return response()->json([ 'success' => true ]);
         } catch (\Throwable $th) {
+            DB::rollback();
             throw $th;
         }
     }
