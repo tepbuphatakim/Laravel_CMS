@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\ClientAPI\ArticleController;
 use App\Http\Controllers\AdminAPI\ArticleController as ArticleAdminController;
 use App\Http\Controllers\AdminAPI\CategoryController as CategoryAdminController;
 use App\Http\Controllers\AdminAPI\TagController as TagAdminController;
