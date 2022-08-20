@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,9 +14,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Product::create([
-            'name' => 'Hotpot 2',
-            'price' => 99.01
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => '$2y$10$2ww2jO8t8qPdpBu4fj/i8.ZPAx/2LMc9zpOEnFnDJYdZ2mi/5u99S' // 12345678
         ]);
     }
 }

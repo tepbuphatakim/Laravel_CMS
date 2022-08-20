@@ -26,7 +26,7 @@ class AuthController extends Controller
             
             $accessToken = AccessToken::updateOrCreate(
                 [ 'user_id' => $user->id ],
-                [ 'access_token' => Str::random(64) ]
+                [ 'access_token' => Str::random(255) ]
             );
             return response()->json([ 'access_token' =>  $accessToken->access_token ]);
         } catch (\Throwable $th) {
